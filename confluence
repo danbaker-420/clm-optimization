@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLM Optimization - Procore</title>
+    <!-- Using pure CSS for styling, adhering strictly to the constraints -->
+    <style>
+        /* Procore Brand Guideline Colors & Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --procore-blue: #0096d2; /* Official Procore Blue */
+            --procore-navy: #0a2d59; /* Dark Footer Background */
+            --procore-orange: #ff5c00; /* Safety Orange Accent */
+            --light-bg: #f4f4f4; /* Light page background */
+            --text-color: #333333; /* Dark gray for readability */
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth; /* Soft scroll for inter-page links */
+        }
+
+        /* --- Utility Classes & Responsive Grid (Replacing Tailwind) --- */
+        .container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+        }
+        @media (min-width: 640px) { .container { padding: 1.5rem; } }
+        @media (min-width: 1024px) { .container { padding: 2rem; } }
+
+        /* General Grid Setup */
+        .grid-layout {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        /* Two-Column Grid */
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+
+        /* Three-Column Grid (For Pillars/Mission) */
+        .grid-3 { grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+        .md-span-2 { grid-column: span 1; }
+        @media (min-width: 768px) { .md-span-2 { grid-column: span 2 / span 2; } }
+        @media (min-width: 1024px) { .lg-span-2 { grid-column: span 2 / span 2; } }
+        @media (min-width: 1024px) { .lg-span-1-fill { grid-column: span 1; } }
+
+        /* --- Components --- */
+        
+        /* Header (Updated to Navy Background) */
+        .header {
+            background-color: var(--procore-navy); /* Changed from procore-blue to procore-navy */
+            color: #ffffff;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.125rem; opacity: 0.9; }
+        @media (min-width: 640px) { .header { padding: 2rem 1.5rem; } .header h1 { font-size: 2.25rem; } }
+
+        /* Cards and Sections */
+        .card {
+            background-color: #ffffff;
+            /* Removed direct padding to allow details content to control it */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* --- Shortcuts Section --- */
+        .shortcuts-card {
+            background-color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .shortcuts-card a {
+            color: var(--procore-blue);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-right: 1px solid #ddd;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .shortcuts-card a:last-child { border-right: none; }
+        .shortcuts-card a:hover { color: var(--procore-orange); }
+
+        /* --- Collapsible Section Styling (Details/Summary) --- */
+        details {
+            margin-bottom: 1.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 1.5rem;
+            list-style: none; /* Hide default arrow */
+            outline: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--procore-blue);
+            background-color: #f7f7f7; /* Light header background for summary */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: #eef7ff; /* Lighter blue hover */
+        }
+
+        summary::-webkit-details-marker,
+        summary::marker {
+            display: none;
+            content: "";
+        }
+
+        summary::after {
+            content: "▶"; /* Closed indicator */
+            margin-left: auto;
+            font-size: 0.75em;
+            color: var(--procore-orange);
+            transition: transform 0.2s;
+        }
+
+        details[open] > summary {
+             border-bottom: 1px solid #e0e0e0;
+             border-radius: 8px 8px 0 0;
+        }
+        details[open] > summary::after {
+            content: "▼"; /* Open indicator */
+        }
+        /* Padding for the content inside a details block */
+        details > :not(summary):not(h2) {
+            padding: 1.5rem; 
+        }
+
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--procore-blue);
+            margin: 0; /* Managed by summary padding */
+        }
+        
+        .accent-header {
+            color: var(--procore-orange);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* --- High Visibility for Latest Updates --- */
+        .high-visibility-updates {
+            border: 3px solid var(--procore-orange) !important;
+            box-shadow: 0 6px 15px rgba(255, 92, 0, 0.2) !important;
+        }
+        .high-visibility-updates summary {
+            background-color: var(--procore-orange);
+            color: #ffffff;
+            font-size: 1.75rem;
+            border-bottom: 1px solid #ff9668 !important;
+        }
+        .high-visibility-updates summary:hover {
+            background-color: #e55300;
+        }
+        .high-visibility-updates summary::after {
+            color: #ffffff;
+        }
+        .high-visibility-updates .table-wrap {
+            padding-top: 0;
+        }
+        .high-visibility-updates h2 { /* Targeting the inner h2 for visibility */
+            color: #ffffff; 
+            margin: 0;
+        }
+
+        /* --- Key Goals - NEW Design (Colored Bullets) --- */
+        
+        .key-goals-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 0.75rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .key-goals-list { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .key-goals-list li {
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            border-radius: 4px;
+            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            background-color: #f7f7f7; /* Light background for definition */
+            border-left: 5px solid;
+            line-height: 1.3;
+        }
+
+        /* Custom Bullet Colors */
+        .goal-color-1 { border-color: var(--procore-blue); color: var(--procore-navy); }
+        .goal-color-2 { border-color: #00bfa5; color: #00897b; } /* Teal */
+        .goal-color-3 { border-color: var(--procore-orange); color: #c64c00; }
+        .goal-color-4 { border-color: #ff9800; color: #d84315; } /* Amber */
+        .goal-color-5 { border-color: #4db6ac; color: #388e3c; } /* Cyan */
+
+        .key-goals-list li::before {
+            content: "•"; /* Custom bullet */
+            position: absolute;
+            left: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: 900;
+            line-height: 1;
+            /* Inherit color from the dedicated class */
+        }
+        .key-goals-list li.goal-color-1::before { color: var(--procore-blue); }
+        .key-goals-list li.goal-color-2::before { color: #00bfa5; }
+        .key-goals-list li.goal-color-3::before { color: var(--procore-orange); }
+        .key-goals-list li.goal-color-4::before { color: #ff9800; }
+        .key-goals-list li.goal-color-5::before { color: #4db6ac; }
+        
+        /* Leadership Quote */
+        blockquote {
+            border-left: 4px solid var(--procore-blue);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .accent-border-left {
+            border-left: 4px solid var(--procore-orange);
+        }
+
+        /* UpLevelOps Analysis (ORANGE Themed) */
+        .analysis-card {
+            background-color: #fffaf0; 
+            border: 1px solid #ffcc99; 
+            color: #995c00; 
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .analysis-card h2 { color: var(--procore-orange); font-size: 1.5rem; display: flex; align-items: center; }
+        .analysis-card h2::before { content: "⚠️"; font-size: 1.5rem; margin-right: 0.5rem; }
+        .analysis-card .italic-text { font-size: 1.25rem; font-style: italic; font-weight: 500; color: var(--procore-orange); margin-bottom: 1rem; }
+        
+        /* Analysis Links */
+        .alert-links { margin-top: 1rem; display: flex; flex-wrap: wrap; }
+        .alert-links a { 
+            color: var(--procore-blue); 
+            text-decoration: none; 
+            font-weight: 600; 
+            margin-right: 1.5rem; 
+            display: inline-flex; 
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        .alert-links a:hover { text-decoration: underline; }
+        .alert-links a:first-child::before { content: "▶"; margin-right: 0.5rem; color: var(--procore-blue); }
+        .alert-links a:last-child::before { content: "📄"; margin-right: 0.5rem; color: var(--procore-blue); }
+
+        /* Strategic Pillars */
+        .pillar-card {
+            border-top: 4px solid;
+            padding: 1.25rem;
+            min-height: 180px;
+        }
+        .pillar-card h3 { 
+            font-size: 1.125rem; 
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .pillar-card p { font-size: 0.875rem; color: #555; margin-bottom: 0.75rem;}
+        .pillar-card ul { list-style: none; padding: 0; margin-top: 0.5rem; font-size: 0.75rem; color: #777; }
+        .pillar-card ul li { margin-bottom: 0.25rem; }
+
+        /* Pillar Colors (Using distinct colors for visual separation) */
+        .p1 { border-color: #3b82f6; } .p1 h3 { color: #1e40af; } /* Blue */
+        .p2 { border-color: #fbbf24; } .p2 h3 { color: #b45309; } /* Yellow */
+        .p3 { border-color: #10b981; } .p3 h3 { color: #065f46; } /* Green */
+        .p4 { border-color: #ef4444; } .p4 h3 { color: #b91c1c; } /* Red */
+        .p5 { border-color: #8b5cf6; } .p5 h3 { color: #5b21b6; } /* Purple */
+        .p6 { border-color: #14b8a6; } .p6 h3 { color: #0f766e; } /* Teal */
+        .p7 { border-color: #9ca3af; } .p7 h3 { color: #4b5563; } /* Gray */
+        
+        /* Table Styling */
+        .table-wrap { overflow-x: auto; padding: 1rem; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { 
+            padding: 12px 16px; 
+            text-align: left; 
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top; /* Ensure text aligns at the top for multi-line content */
+        }
+        .data-table th {
+            background-color: #f7f7f7;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .data-table tr:hover { background-color: #f0f8ff; }
+        .data-table .date-cell { font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
+        .data-table .pillar-cell { font-weight: 500; color: #1d4ed8; font-size: 0.875rem; }
+        .data-table .summary-cell { color: #333; font-size: 0.875rem; }
+        .data-table .outcome-cell { color: #666; font-size: 0.875rem; }
+        .table-link { color: var(--procore-blue); text-decoration: none; font-weight: 600; }
+        .table-link:hover { text-decoration: underline; }
+        
+        /* Knowledge Hub */
+        .knowledge-link {
+            color: var(--procore-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .knowledge-link:hover { text-decoration: underline; }
+        .knowledge-link::before { 
+            content: "›"; 
+            color: var(--procore-orange); 
+            margin-right: 0.5rem; 
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .hub-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #444;}
+        .hub-title-icon { margin-right: 0.5rem; font-size: 1.25rem; color: var(--procore-blue); }
+        
+        /* Category Grouping in Hub */
+        .category-group {
+            margin-bottom: 1rem;
+        }
+        .category-group h4 {
+            font-weight: 700; 
+            font-size: 1rem; 
+            color: var(--procore-navy); 
+            margin-bottom: 0.5rem; 
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #eee;
+        }
+        @media (min-width: 768px) {
+             .hub-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+
+        .chat-card { border-left: 4px solid #4caf50; }
+        .chat-button {
+            background-color: #4caf50;
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px; /* Pill shape */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+        .chat-button:hover { background-color: #388e3c; }
+
+        .planning-card { border-left: 4px solid var(--procore-orange); }
+        .planning-card .hub-title-icon { color: var(--procore-orange); }
+
+        /* Footer Styling */
+        .footer {
+            background-color: var(--procore-navy);
+            color: #ffffff;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-text {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.875rem;
+            opacity: 0.75;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1>
+                Contracting Lifecycle Management (CLM) Optimization
+            </h1>
+            <p>
+                Your guide to the critical initiative to revitalize Procore's CLM process.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- --- Shortcuts Section --- -->
+        <div class="shortcuts-card">
+            <!-- Updated shortcut links to reflect new section order -->
+            <a href="#mission">Mission & Goals</a>
+            <a href="#pillars">FY25 Strategic Pillars</a>
+            <a href="#updates">Latest Updates & Notes</a>
+            <a href="#analysis">Gap Analysis</a>
+            <a href="#leadership">Leadership</a>
+            <a href="#hub">Knowledge Hub</a>
+        </div>
+        
+        <!-- Project Mission and Goals (1: Sets foundation) -->
+        <section id="mission">
+            <details open class="card">
+                <summary>Project Mission & Goals</summary>
+                
+                <!-- Removed grid-layout grid-3 wrapper to allow full width flow -->
+                <div> 
+                    <div class="mission-statement"> 
+                        <h3 class="accent-header" style="display: flex; align-items: center;">
+                            <span style="font-size: 1.2em; margin-right: 0.5rem; color: var(--procore-orange);">➤</span> Project Mission
+                        </h3>
+                        <p style="font-style: italic; color: #555;">
+                            To transform Procore's contracting operations into a streamlined, efficient, and scalable function that empowers our teams, accelerates deal velocity, and provides trusted, actionable insights, thereby supporting Procore's rapid growth and strategic objectives.
+                        </p>
+                    </div>
+                    
+                    <!-- Key Goals - NEW Full-Width Colored List -->
+                    <h3 class="accent-header" style="margin-top: 1.5rem; margin-bottom: 0.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; color: var(--procore-blue); font-size: 1.25rem;">Key Goals</h3>
+                    <ul class="key-goals-list">
+                        <li class="goal-color-1">Establish Clear Leadership and Agile Governance</li>
+                        <li class="goal-color-2">Optimize Technology for Enhanced Performance and User Experience</li>
+                        <li class="goal-color-3">Empower All Users Through Comprehensive Enablement and Support</li>
+                        <li class="goal-color-4">Drive Process Excellence for Scalability and New GTM Motions</li>
+                        <li class="goal-color-5">Ensure Data Integrity for Trusted Reporting and Actionable Insights</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+        <!-- FY25 Strategic Pillars (2: The strategic roadmap) -->
+        <section id="pillars">
+            <details open class="card">
+                <summary>📊 CLM FY25 Strategic Pillars (7)</summary>
+                <div class="grid-layout grid-3">
+                    
+                    <!-- Pillar 1 -->
+                    <div class="card pillar-card p1">
+                        <h3>👥 Governance & Alignment</h3>
+                        <p>Clarify roles, streamline workflows, and drive alignment through a well-defined RACI, scrum governance, and targeted enablement.</p>
+                        <ul>
+                            <li>🔍 Define RACI & streamline Scrum</li>
+                            <li>🤝 Cross-functional alignment</li>
+                            <li>📚 Targeted enablement</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="card pillar-card p2">
+                        <h3>⚡ Seller Empowerment</h3>
+                        <p>Empower Sellers with AI-guided resources, Slack support, training, and seamless Salesforce integration.</p>
+                        <ul>
+                            <li>💬 AI-guided talk tracks & Slack support</li>
+                            <li>🎓 Training + Live enablement sessions</li>
+                            <li>🧠 Promote self-service</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Pillar 3 -->
+                    <div class="card pillar-card p3">
+                        <h3>✅ Process Simplification</h3>
+                        <p>Streamline standard contracts (Order Form, SSA) and expand support for complex GTM motions.</p>
+                        <ul>
+                            <li>✅ Streamline standard contracts</li>
+                            <li>🔄 Support complex GTM motions</li>
+                            <li>⚙️ Improve wet-signature flows</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="card pillar-card p4">
+                        <h3>💾 Data Integrity & Reporting</h3>
+                        <p>Establish trusted contract data with a structured dictionary and reporting framework. Launch dashboards and insights.</p>
+                        <ul>
+                            <li>🧩 Build contract data dictionary</li>
+                            <li>📈 Launch reporting releases (1.0–1.6)</li>
+                            <li>📊 Enable dashboards</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 5 -->
+                    <div class="card pillar-card p5">
+                        <h3>✨ AI Adoption & Automation</h3>
+                        <p>Deploy AI tools to support contract review, Tier-1 legal queries, and document drafting. Increase scale, speed and accuracy.</p>
+                        <ul>
+                            <li>🧠 Deploy AI tools (Luminance, LegalOn)</li>
+                            <li>📄 Automate Tier-1 legal support</li>
+                            <li>⚡ Accelerate document review and triage</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 6 -->
+                    <div class="card pillar-card p6">
+                        <h3>📄 Scalable Workflows</h3>
+                        <p>Introduce scalable workflows for specialized agreement types (e.g., NDAs, Data Sharing). Standardize and automate where feasible.</p>
+                        <ul>
+                            <li>📑 Launch scalable templates for: NDAs, Subcontracting, etc.</li>
+                            <li>⏱ Reduce turnaround time</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Pillar 7 -->
+                    <div class="card pillar-card p7 lg-span-1-fill">
+                        <h3>🔄 Ongoing Maintenance & Support</h3>
+                        <p>Continue delivering high-priority updates to support product launches, GTM evolution, and compliance.</p>
+                        <ul>
+                            <li>⚡ Updates for product launches & GTM changes</li>
+                            <li>📆 Prioritize compliance & regulatory readiness</li>
+                            <li>⚖️ Balance day-to-day support with roadmap delivery</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </details>
+        </section>
+
+        <!-- Latest Updates & Release Notes Table (3: Recent progress/news) -->
+        <section id="updates">
+            <details open class="high-visibility-updates card">
+                <summary>✨ Latest Updates & Release Notes</summary>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-3">Launch Date</th>
+                                <th class="px-4 py-3">Pillar</th>
+                                <th class="px-4 py-3">Feature Summary</th>
+                                <th class="px-4 py-3">Outcome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Updated data, sorted most recent first, with links -->
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Sep 12, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1s6rqIYdj4p-rQ5PXVSuRdQBmIJNbtWvCgSfct6pgnbM/edit?tab=t.0" target="_blank" class="table-link">NDA contract review with <strong>Luminance</strong></a>
+                                </td>
+                                <td class="outcome-cell">The Luminance tool is now ready for NDA review. Luminance streamlines the contract review process by using AI to identify key clauses, highlight risks, and spot anomalies, improving accuracy and consistency.</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Aug 26, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1Bj63_pbTWJFPwZyUOImIiFitmTANlVLv-H7tllQBrio/edit?tab=t.0#heading=h.glo9evfmstmj" target="_blank" class="table-link">Order Form Updates: <strong>Removal of Customer Signatory Initials</strong> Requirement</a>
+                                </td>
+                                <td class="outcome-cell">This strategic update eliminates the necessity for separate initials, aligning documentation with current business policies and substantially streamlining agreement execution for all customers.</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Jul 15, 2025</td>
+                                <td class="pillar-cell" style="color: #666;">Other Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1wJNpq8_sW3ClSD1GKYuP3pVI2U1dBl_cPAuiyYDcxJM/edit?tab=t.0" target="_blank" class="table-link">Groundbreak 2025 Speaker Agreements</a>
+                                </td>
+                                <td class="outcome-cell">This enhancement directly supports our Marketing team by allowing them to promptly send out the correct agreements. It expedites speaker readiness, ensures legal compliance for Groundbreak 2025, and helps pave the way for a successful event!</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Jul 11, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1RLY3OqjgWC_lY3GOQOFrsefHglCSIcQBrRkkS5dEhP4/edit?tab=t.0" target="_blank" class="table-link">Automated T&Cs for Resource Planning & Tracking</a>
+                                </td>
+                                <td class="outcome-cell">Saves time for the Deal desk team and ensures consistency on the Order Form language.</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Jul 7, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1BXsPPDRviiJL2aG0pmbf5wYRV56Lv9EjrSTkb8VUTi4/edit?tab=t.0" target="_blank" class="table-link">Ironclad workflow improvements to streamline draft Order Form Process</a>
+                                </td>
+                                <td class="outcome-cell">Simplified the process to handle draft Order Forms in Ironclad, empowering sellers and accelerating deal timelines!</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50">
+                                <td class="date-cell">Jul 7, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1ugkqZaQruIxZ5s4rT29AuGCJmXYiOKvDnCIiP47b2dA/edit?tab=t.0" target="_blank" class="table-link">Risk Mitigation: Enhanced Order Form Security & Accuracy</a>
+                                </td>
+                                <td class="outcome-cell">Fixed a control issue in the wet signature process that allowed deals to close without Order Management review.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </section>
+
+        <!-- UpLevelOps Analysis (4: Context and Justification) -->
+        <section id="analysis">
+            <details open class="card">
+                <summary>UpLevelOps Contracting Gap Analysis</summary>
+                <div class="analysis-card">
+                    <h2>UpLevelOps Contracting Gap Analysis</h2>
+                    <p class="italic-text">
+                        "Ironclad is not the root issue—fragmented ownership, lack of enablement, and inconsistent data practices are. Fix these & rebrand!"
+                    </p>
+                    <p style="color: #666;">
+                        The assessment identified Procore's contracting operations as functional but fragmented due to challenges in role clarity, training, governance, data, and technology utilization. ULO determined that **Ironclad is a viable platform**, with primary issues rooted in its configuration, governance, and enablement, thus advising optimization over replacement. The path to improvement involves people and process transformation with targeted technology optimization.
+                    </p>
+                    <div class="alert-links">
+                        <a href="https://drive.google.com/file/d/1ikK_Rn5nTCIuqHYGvDM6qocEe1l5Vl0l/view?usp=drive_link" target="_blank">Watch 2 min Summary Video</a>
+                        <a href="https://drive.google.com/file/d/1fzYguSOdXeOIUs98L9DJILl8xuhNifYn/view?usp=drive_link" target="_blank">Read Full Analysis</a>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <!-- Leadership / About Us (5: Who is driving this) -->
+        <section id="leadership">
+            <details open class="card">
+                <summary>Leadership & Team Overview</summary>
+                <div class="grid-layout grid-2" style="padding: 0 1.5rem;">
+                    
+                    <div style="padding-right: 1.5rem; border-right: 1px solid #e0e0e0;">
+                        <h2 class="section-header" style="border-bottom: 2px solid #e0e0e0;">Legal Operations Team</h2>
+                        <p style="color: #555; margin-bottom: 1rem;">
+                            The Legal Operations Team at Procore is dedicated to enhancing the efficiency, effectiveness, and strategic impact of our legal services. We work to streamline processes, optimize technology, and ensure compliance across the organization, supporting Procore's growth and success. Our focus is on enabling our in-house legal teams through improvements in **people, process, and technology** to drive Policy and Compliance.
+                        </p>
+                        <!-- Added Legal Ops Wiki Link -->
+                        <a href="https://procoretech.atlassian.net/wiki/spaces/LRC/pages/2802942240" target="_blank" style="color: var(--procore-blue); font-weight: 600; text-decoration: none; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                            🔗 Visit the Legal Operations Team Wiki
+                        </a>
+                    </div>
+                    
+                    <div class="accent-border-left" style="padding-left: 1.5rem;">
+                        <h2 class="accent-header">Kalyani Pagadrai</h2>
+                        <h3 style="margin-bottom: 1rem; font-weight: 600; font-size: 1.125rem;">Legal Operations, Sr. Manager for CLM</h3>
+                        <p style="color: #555; margin-bottom: 1rem;">
+                            Kalyani brings over 15 years of extensive experience in the Legal Technology domain, with a proven track record at companies like Stripe and Cisco. Her expertise lies in enabling in-house legal teams through improvements in people, process, and technology.
+                        </p>
+                        <blockquote style="margin-top: 1.5rem;">
+                            “My primary goal is to transform our contracting process into a streamlined, efficient, and scalable operation that empowers our teams and supports Procore's growth. I will be partnering closely with LRC leadership, Commercial Legal, cross-functional leaders, and our DTS teams to implement a comprehensive improvement plan.”
+                        </blockquote>
+                    </div>
+
+                </div>
+            </details>
+        </section>
+        
+        <!-- Knowledge Hub & Engagement (6: Resources and Support) -->
+        <section id="hub">
+            <details open class="card">
+                <summary>📚 Knowledge Hub & Resources</summary>
+                <div class="grid-layout grid-3">
+                    
+                    <!-- Knowledge Hub Card - Organized into Categories -->
+                    <div class="lg-span-2" style="padding-right: 1.5rem; border-right: 1px solid #e0e0e0;">
+                        <h3 class="hub-title" style="display: flex; align-items: center;"><span class="hub-title-icon">📖</span> Key Documents & Tools</h3>
+                        <div class="grid-layout hub-grid-2" style="gap: 1.5rem;">
+                            
+                            <!-- Category 1: Project & Strategy -->
+                            <div class="category-group">
+                                <h4>Project & Strategy</h4>
+                                <a href="https://drive.google.com/file/d/1fzYguSOdXeOIUs98L9DJILl8xuhNifYn/view?usp=drive_link" target="_blank" class="knowledge-link">ULO Report (Kalyani’s Analysis)</a>
+                                <a href="https://docs.google.com/presentation/d/1Aka44tRdRYB_qIgw5aBCVAdXxbcLzbhfqbnbXYyhaWY/edit?slide=id.g35c04e19edb_0_3199#slide=id.g35c04e19edb_0_3199" target="_blank" class="knowledge-link">CLM Optimization: What it is & isn't (Deck)</a>
+                                <a href="https://drive.google.com/file/d/1dNdwT53g3xCNKdCwTlpb-xfmzuwIm4C6/view?usp=drive_link" target="_blank" class="knowledge-link">CLM Project Roadmap</a>
+                                <a href="https://drive.google.com/file/d/1RHff2JcycrhSLesIzrYaDSBY7JHs0X8o/view?usp=drive_link" target="_blank" class="knowledge-link">Project Stakeholder List</a>
+                                <a href="https://notebooklm.google.com/notebook/d299d56d-524f-4bb5-ade7-056c19bb73e5?authuser=1" target="_blank" class="knowledge-link">Notebook LM (ULO Report Q&A Tool)</a>
+                            </div>
+
+                            <!-- Category 2: Contracting Process & Guides -->
+                            <div class="category-group">
+                                <h4>Contracting Process & Guides</h4>
+                                <a href="https://procore.highspot.com/items/67fecb579886fc92947685b2?lfrm=shp.0#1" target="_blank" class="knowledge-link">Ironclad Fallbacks</a>
+                                <a href="https://docs.google.com/document/d/19WQnvtcaT8_Baaq59t6bWa9tllEtmCPhdSduzDRzN_Y/edit?tab=t.0" target="_blank" class="knowledge-link">Ironclad Checklist</a>
+                                <a href="https://docs.google.com/document/d/1RF7YBKA_VXgXdmsKclwQ5qotwNX9zJ3Z9J4dHem84x0/edit?tab=t.0" target="_blank" class="knowledge-link">Ironclad How-to Guide</a>
+                                <a href="https://docs.google.com/document/d/164ObWq1QExLuNIFWLCA8q1ziYThWzd1gpbpeBTWlY0s/edit?tab=t.0" target="_blank" class="knowledge-link">Non-standard Signature Process</a>
+                                <a href="https://academy.ironcladapp.com/pages/customer-sign-in" target="_blank" class="knowledge-link">Ironclad Academy (External Training)</a>
+                            </div>
+
+                            <!-- Category 3: Supporting Sales Resources (Full width on small screens, below guides on large) -->
+                            <div class="category-group" style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 1rem;">
+                                <h4>Supporting Sales Resources</h4>
+                                <div class="grid-layout grid-3">
+                                    <a href="#" class="knowledge-link">Sales Empowered Deal Model</a>
+                                    <a href="#" class="knowledge-link">Procore SSA (Published Feb 2025)</a>
+                                    <a href="#" class="knowledge-link">Talk Tracks on Customer Paper</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat/FAQ Card -->
+                    <div class="chat-card" style="padding-left: 1.5rem;">
+                        <h3 class="hub-title" style="display: flex; align-items: center;"><span class="hub-title-icon" style="color: #4caf50;">💬</span> Chat with the Team</h3>
+                        <p style="font-size: 0.875rem; color: #555; margin-bottom: 0.75rem;">Join the private Ironclad core team channel for discussions and direct Q&A.</p>
+                        <a href="#" class="chat-button">
+                            Ask to join #private-ironclad-discussions
+                        </a>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">
+            CLM Optimization Page &bull; Procore Internal Resource
+        </div>
+    </footer>
+</body>
+</html>
