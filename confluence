@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLM Optimization - Procore</title>
-    <!-- Using pure CSS for styling, adhering strictly to the constraints -->
-    <style>
+    <!-- Using pure CSS for styling, adhering strictly to the constraints --><style>
         /* Procore Brand Guideline Colors & Typography */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
@@ -24,7 +23,7 @@
             line-height: 1.5;
             margin: 0;
             padding: 0;
-            scroll-behavior: smooth; /* Soft scroll for inter-page links */
+            scroll-behavior: smooth; /* Soft scroll for inter-page links (CSS fallback) */
         }
 
         /* --- Utility Classes & Responsive Grid (Replacing Tailwind) --- */
@@ -197,7 +196,7 @@
             margin: 0;
         }
 
-        /* --- Key Goals - NEW Design (Colored Bullets) --- */
+        /* --- Key Goals - NEW Design (Colored Bullets) */
         
         .key-goals-list {
             list-style: none;
@@ -260,7 +259,7 @@
             border-left: 4px solid var(--procore-orange);
         }
 
-        /* UpLevelOps Analysis (ORANGE Themed) */
+        /* UpLevelOps Analysis (ORANGE Theme) */
         .analysis-card {
             background-color: #fffaf0; 
             border: 1px solid #ffcc99; 
@@ -374,6 +373,28 @@
              .hub-grid-2 { grid-template-columns: repeat(2, 1fr); }
         }
 
+        /* New class for link descriptions */
+        .link-description {
+            margin-top: -0.5rem; /* Pull up closer to the link */
+            margin-bottom: 1.25rem;
+            padding-left: 1.25rem; /* Align under the link title */
+            font-size: 0.8rem;
+            color: #777;
+            line-height: 1.2;
+        }
+        
+        /* New styling for the sub-category label */
+        .sub-category-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--procore-navy); 
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+            padding-left: 0;
+            border-bottom: 1px dashed #ccc;
+            display: block;
+        }
+
 
         .chat-card { border-left: 4px solid #4caf50; }
         .chat-button {
@@ -393,6 +414,18 @@
 
         .planning-card { border-left: 4px solid var(--procore-orange); }
         .planning-card .hub-title-icon { color: var(--procore-orange); }
+
+        /* Kalyani's Profile Picture Styling (Corrected for image display) */
+        .profile-pic {
+            width: 80px; 
+            height: 80px;
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover; /* Ensures the image covers the area */
+            margin-right: 1rem; 
+            float: left; 
+            shape-outside: circle(50%); 
+            margin-bottom: 1rem; 
+        }
 
         /* Footer Styling */
         .footer {
@@ -425,10 +458,8 @@
 
     <main class="container">
         
-        <!-- --- Shortcuts Section --- -->
-        <div class="shortcuts-card">
-            <!-- Updated shortcut links to reflect new section order -->
-            <a href="#mission">Mission & Goals</a>
+        <!-- --- Shortcuts Section --- --><div class="shortcuts-card">
+            <!-- Updated shortcut links to reflect new section order --><a href="#mission">Mission & Goals</a>
             <a href="#pillars">FY25 Strategic Pillars</a>
             <a href="#updates">Latest Updates & Notes</a>
             <a href="#analysis">Gap Analysis</a>
@@ -436,13 +467,11 @@
             <a href="#hub">Knowledge Hub</a>
         </div>
         
-        <!-- Project Mission and Goals (1: Sets foundation) -->
-        <section id="mission">
+        <!-- Project Mission and Goals (1: Sets foundation) --><section id="mission">
             <details open class="card">
                 <summary>Project Mission & Goals</summary>
                 
-                <!-- Removed grid-layout grid-3 wrapper to allow full width flow -->
-                <div> 
+                <!-- Removed grid-layout grid-3 wrapper to allow full width flow --><div> 
                     <div class="mission-statement"> 
                         <h3 class="accent-header" style="display: flex; align-items: center;">
                             <span style="font-size: 1.2em; margin-right: 0.5rem; color: var(--procore-orange);">➤</span> Project Mission
@@ -452,8 +481,7 @@
                         </p>
                     </div>
                     
-                    <!-- Key Goals - NEW Full-Width Colored List -->
-                    <h3 class="accent-header" style="margin-top: 1.5rem; margin-bottom: 0.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; color: var(--procore-blue); font-size: 1.25rem;">Key Goals</h3>
+                    <!-- Key Goals - NEW Full-Width Colored List --><h3 class="accent-header" style="margin-top: 1.5rem; margin-bottom: 0.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; color: var(--procore-blue); font-size: 1.25rem;">Key Goals</h3>
                     <ul class="key-goals-list">
                         <li class="goal-color-1">Establish Clear Leadership and Agile Governance</li>
                         <li class="goal-color-2">Optimize Technology for Enhanced Performance and User Experience</li>
@@ -465,14 +493,12 @@
             </details>
         </section>
 
-        <!-- FY25 Strategic Pillars (2: The strategic roadmap) -->
-        <section id="pillars">
+        <!-- FY25 Strategic Pillars (2: The strategic roadmap) --><section id="pillars">
             <details open class="card">
                 <summary>📊 CLM FY25 Strategic Pillars (7)</summary>
                 <div class="grid-layout grid-3">
                     
-                    <!-- Pillar 1 -->
-                    <div class="card pillar-card p1">
+                    <!-- Pillar 1 --><div class="card pillar-card p1">
                         <h3>👥 Governance & Alignment</h3>
                         <p>Clarify roles, streamline workflows, and drive alignment through a well-defined RACI, scrum governance, and targeted enablement.</p>
                         <ul>
@@ -482,8 +508,7 @@
                         </ul>
                     </div>
 
-                    <!-- Pillar 2 -->
-                    <div class="card pillar-card p2">
+                    <!-- Pillar 2 --><div class="card pillar-card p2">
                         <h3>⚡ Seller Empowerment</h3>
                         <p>Empower Sellers with AI-guided resources, Slack support, training, and seamless Salesforce integration.</p>
                         <ul>
@@ -493,8 +518,7 @@
                         </ul>
                     </div>
                     
-                    <!-- Pillar 3 -->
-                    <div class="card pillar-card p3">
+                    <!-- Pillar 3 --><div class="card pillar-card p3">
                         <h3>✅ Process Simplification</h3>
                         <p>Streamline standard contracts (Order Form, SSA) and expand support for complex GTM motions.</p>
                         <ul>
@@ -504,30 +528,27 @@
                         </ul>
                     </div>
 
-                    <!-- Pillar 4 -->
-                    <div class="card pillar-card p4">
+                    <!-- Pillar 4 --><div class="card pillar-card p4">
                         <h3>💾 Data Integrity & Reporting</h3>
                         <p>Establish trusted contract data with a structured dictionary and reporting framework. Launch dashboards and insights.</p>
                         <ul>
                             <li>🧩 Build contract data dictionary</li>
                             <li>📈 Launch reporting releases (1.0–1.6)</li>
                             <li>📊 Enable dashboards</li>
-                        </ul>
+                            </ul>
                     </div>
 
-                    <!-- Pillar 5 -->
-                    <div class="card pillar-card p5">
+                    <!-- Pillar 5 --><div class="card pillar-card p5">
                         <h3>✨ AI Adoption & Automation</h3>
                         <p>Deploy AI tools to support contract review, Tier-1 legal queries, and document drafting. Increase scale, speed and accuracy.</p>
                         <ul>
-                            <li>🧠 Deploy AI tools (Luminance, LegalOn)</li>
+                            <li>🧠 Deploy AI tools (Luminance, GTM Assist)</li>
                             <li>📄 Automate Tier-1 legal support</li>
                             <li>⚡ Accelerate document review and triage</li>
                         </ul>
                     </div>
 
-                    <!-- Pillar 6 -->
-                    <div class="card pillar-card p6">
+                    <!-- Pillar 6 --><div class="card pillar-card p6">
                         <h3>📄 Scalable Workflows</h3>
                         <p>Introduce scalable workflows for specialized agreement types (e.g., NDAs, Data Sharing). Standardize and automate where feasible.</p>
                         <ul>
@@ -536,8 +557,7 @@
                         </ul>
                     </div>
                     
-                    <!-- Pillar 7 -->
-                    <div class="card pillar-card p7 lg-span-1-fill">
+                    <!-- Pillar 7 --><div class="card pillar-card p7 lg-span-1-fill">
                         <h3>🔄 Ongoing Maintenance & Support</h3>
                         <p>Continue delivering high-priority updates to support product launches, GTM evolution, and compliance.</p>
                         <ul>
@@ -551,8 +571,7 @@
             </details>
         </section>
 
-        <!-- Latest Updates & Release Notes Table (3: Recent progress/news) -->
-        <section id="updates">
+        <!-- Latest Updates & Release Notes Table (3: Recent progress/news) --><section id="updates">
             <details open class="high-visibility-updates card">
                 <summary>✨ Latest Updates & Release Notes</summary>
                 <div class="table-wrap">
@@ -566,8 +585,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Updated data, sorted most recent first, with links -->
-                            <tr class="hover:bg-blue-50">
+                            <!-- NEW ENTRY: Procore for Government Launch (Oct 17, 2025) --><tr class="hover:bg-blue-50">
+                                <td class="date-cell">Oct 17, 2025</td>
+                                <td class="pillar-cell">GTM Workflows</td>
+                                <td class="summary-cell">
+                                    <a href="https://docs.google.com/document/d/1fzYkahm-ulBEkET7WrOisSVi2_79LHpG/edit#heading=h.6fwu3xfxbk82" target="_blank" class="table-link"><strong>Procore for Government (PfG) Launch</strong> Readiness</a>
+                                </td>
+                                <td class="outcome-cell">Critical agreements and contract workflows updated to support the launch of Procore for Government, ensuring legal compliance and sales readiness for the new market.</td>
+                            </tr>
+                            <!-- Existing data, sorted most recent first, with links --><tr class="hover:bg-blue-50">
                                 <td class="date-cell">Sep 12, 2025</td>
                                 <td class="pillar-cell">GTM Workflows</td>
                                 <td class="summary-cell">
@@ -621,8 +647,7 @@
             </details>
         </section>
 
-        <!-- UpLevelOps Analysis (4: Context and Justification) -->
-        <section id="analysis">
+        <!-- UpLevelOps Analysis (4: Context and Justification) --><section id="analysis">
             <details open class="card">
                 <summary>UpLevelOps Contracting Gap Analysis</summary>
                 <div class="analysis-card">
@@ -631,7 +656,7 @@
                         "Ironclad is not the root issue—fragmented ownership, lack of enablement, and inconsistent data practices are. Fix these & rebrand!"
                     </p>
                     <p style="color: #666;">
-                        The assessment identified Procore's contracting operations as functional but fragmented due to challenges in role clarity, training, governance, data, and technology utilization. ULO determined that **Ironclad is a viable platform**, with primary issues rooted in its configuration, governance, and enablement, thus advising optimization over replacement. The path to improvement involves people and process transformation with targeted technology optimization.
+                        The assessment identified Procore's contracting operations as functional but fragmented due to challenges in role clarity, training, governance, data, and technology utilization. ULO determined that <strong>Ironclad is a viable platform</strong>, with primary issues rooted in its configuration, governance, and enablement, thus advising optimization over replacement. The path to improvement involves people and process transformation with targeted technology optimization.
                     </p>
                     <div class="alert-links">
                         <a href="https://drive.google.com/file/d/1ikK_Rn5nTCIuqHYGvDM6qocEe1l5Vl0l/view?usp=drive_link" target="_blank">Watch 2 min Summary Video</a>
@@ -641,8 +666,7 @@
             </details>
         </section>
 
-        <!-- Leadership / About Us (5: Who is driving this) -->
-        <section id="leadership">
+        <!-- Leadership / About Us (5: Who is driving this) --><section id="leadership">
             <details open class="card">
                 <summary>Leadership & Team Overview</summary>
                 <div class="grid-layout grid-2" style="padding: 0 1.5rem;">
@@ -650,16 +674,22 @@
                     <div style="padding-right: 1.5rem; border-right: 1px solid #e0e0e0;">
                         <h2 class="section-header" style="border-bottom: 2px solid #e0e0e0;">Legal Operations Team</h2>
                         <p style="color: #555; margin-bottom: 1rem;">
-                            The Legal Operations Team at Procore is dedicated to enhancing the efficiency, effectiveness, and strategic impact of our legal services. We work to streamline processes, optimize technology, and ensure compliance across the organization, supporting Procore's growth and success. Our focus is on enabling our in-house legal teams through improvements in **people, process, and technology** to drive Policy and Compliance.
+                            The Legal Operations Team at Procore is dedicated to enhancing the efficiency, effectiveness, and strategic impact of our legal services. We work to streamline processes, optimize technology, and ensure compliance across the organization, supporting Procore's growth and success. Our focus is on enabling our in-house legal teams through improvements in <strong>people, process, and technology</strong> to drive Policy and Compliance.
                         </p>
-                        <!-- Added Legal Ops Wiki Link -->
-                        <a href="https://procoretech.atlassian.net/wiki/spaces/LRC/pages/2802942240" target="_blank" style="color: var(--procore-blue); font-weight: 600; text-decoration: none; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
+                        <!-- Added Legal Ops Wiki Link --><a href="https://procoretech.atlassian.net/wiki/spaces/LRC/pages/2802942240" target="_blank" style="color: var(--procore-blue); font-weight: 600; text-decoration: none; display: block; margin-top: 0.5rem; font-size: 0.9rem;">
                             🔗 Visit the Legal Operations Team Wiki
                         </a>
                     </div>
                     
                     <div class="accent-border-left" style="padding-left: 1.5rem;">
-                        <h2 class="accent-header">Kalyani Pagadrai</h2>
+                        <h2 class="accent-header">
+                            <!-- Using placeholder image as the provided LinkedIn URL is blocked from loading here -->
+                            <img src="https://placehold.co/80x80/0096d2/ffffff?text=KP" 
+                                 alt="Kalyani Pagadrai Profile" 
+                                 class="profile-pic"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/80x80/0096d2/ffffff?text=KP'">
+                            Kalyani Pagadrai
+                        </h2>
                         <h3 style="margin-bottom: 1rem; font-weight: 600; font-size: 1.125rem;">Legal Operations, Sr. Manager for CLM</h3>
                         <p style="color: #555; margin-bottom: 1rem;">
                             Kalyani brings over 15 years of extensive experience in the Legal Technology domain, with a proven track record at companies like Stripe and Cisco. Her expertise lies in enabling in-house legal teams through improvements in people, process, and technology.
@@ -673,19 +703,16 @@
             </details>
         </section>
         
-        <!-- Knowledge Hub & Engagement (6: Resources and Support) -->
-        <section id="hub">
+        <!-- Knowledge Hub & Engagement (6: Resources and Support) --><section id="hub">
             <details open class="card">
                 <summary>📚 Knowledge Hub & Resources</summary>
                 <div class="grid-layout grid-3">
                     
-                    <!-- Knowledge Hub Card - Organized into Categories -->
-                    <div class="lg-span-2" style="padding-right: 1.5rem; border-right: 1px solid #e0e0e0;">
+                    <!-- Knowledge Hub Card - Organized into Categories --><div class="lg-span-2" style="padding-right: 1.5rem; border-right: 1px solid #e0e0e0;">
                         <h3 class="hub-title" style="display: flex; align-items: center;"><span class="hub-title-icon">📖</span> Key Documents & Tools</h3>
                         <div class="grid-layout hub-grid-2" style="gap: 1.5rem;">
                             
-                            <!-- Category 1: Project & Strategy -->
-                            <div class="category-group">
+                            <!-- Category 1: Project & Strategy --><div class="category-group">
                                 <h4>Project & Strategy</h4>
                                 <a href="https://drive.google.com/file/d/1fzYguSOdXeOIUs98L9DJILl8xuhNifYn/view?usp=drive_link" target="_blank" class="knowledge-link">ULO Report (Kalyani’s Analysis)</a>
                                 <a href="https://docs.google.com/presentation/d/1Aka44tRdRYB_qIgw5aBCVAdXxbcLzbhfqbnbXYyhaWY/edit?slide=id.g35c04e19edb_0_3199#slide=id.g35c04e19edb_0_3199" target="_blank" class="knowledge-link">CLM Optimization: What it is & isn't (Deck)</a>
@@ -694,8 +721,7 @@
                                 <a href="https://notebooklm.google.com/notebook/d299d56d-524f-4bb5-ade7-056c19bb73e5?authuser=1" target="_blank" class="knowledge-link">Notebook LM (ULO Report Q&A Tool)</a>
                             </div>
 
-                            <!-- Category 2: Contracting Process & Guides -->
-                            <div class="category-group">
+                            <!-- Category 2: Contracting Process & Guides --><div class="category-group">
                                 <h4>Contracting Process & Guides</h4>
                                 <a href="https://procore.highspot.com/items/67fecb579886fc92947685b2?lfrm=shp.0#1" target="_blank" class="knowledge-link">Ironclad Fallbacks</a>
                                 <a href="https://docs.google.com/document/d/19WQnvtcaT8_Baaq59t6bWa9tllEtmCPhdSduzDRzN_Y/edit?tab=t.0" target="_blank" class="knowledge-link">Ironclad Checklist</a>
@@ -704,23 +730,42 @@
                                 <a href="https://academy.ironcladapp.com/pages/customer-sign-in" target="_blank" class="knowledge-link">Ironclad Academy (External Training)</a>
                             </div>
 
-                            <!-- Category 3: Supporting Sales Resources (Full width on small screens, below guides on large) -->
-                            <div class="category-group" style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 1rem;">
-                                <h4>Supporting Sales Resources</h4>
-                                <div class="grid-layout grid-3">
-                                    <a href="#" class="knowledge-link">Sales Empowered Deal Model</a>
-                                    <a href="#" class="knowledge-link">Procore SSA (Published Feb 2025)</a>
-                                    <a href="#" class="knowledge-link">Talk Tracks on Customer Paper</a>
-                                </div>
+                            <!-- Category 3: Supporting Sales Resources (Updated with new sub-label) --><div class="category-group" style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 1rem;">
+                                <h4>Sales Empowered Deal Model</h4>
+                                
+                                <!-- NEW SUB-HEADER/LABEL --><p class="sub-category-label">Sales Enablement Resources</p>
+                                
+                                <!-- Mindtickle Trainings (LINK TEXT RESTORED) --><a href="https://procore.mindtickle.com/new/ui/learner/training/modules" target="_blank" class="knowledge-link">Mindtickle Trainings!</a>
+                                <p class="link-description">All Sales Empowered Enablement Trainings are located here for certification tracking</p>
+                                
+                                <!-- Highspot Trainings (link content unchanged) --><a href="https://procore.mindtickle.com/new/ui/learner/training/programs/1896614711978132254/modules" target="_blank" class="knowledge-link">Highspot Trainings!</a>
+                                <p class="link-description">Important note - watching here will not track certification requirements</p>
+                                
+                                <!-- Procore SSA (Published) (link content unchanged) --><a href="https://www.procore.com/legal/subscription-agreements/standard" target="_blank" class="knowledge-link">Procore SSA (Published Feb 2025)</a>
+                                
+                                <!-- Procore SSA (Highspot) (link content unchanged) --><a href="https://procore.highspot.com/items/67a4f05492ab7166876e9939?lfrm=srp.6#1" target="_blank" class="knowledge-link">Procore SSA (Highspot Feb 2025)</a>
+                                
+                                <!-- TermScout (link content unchanged) --><a href="https://app.termscout.com/certify/procore-certified-contract" target="_blank" class="knowledge-link">Procore TermScout Certified Contract Report</a>
+                                
+                                <!-- Talk Tracks (link content unchanged) --><a href="https://procore.highspot.com/items/6690154190fd7843a69052c5?lfrm=isd.10#1" target="_blank" class="knowledge-link">Talk Tracks</a>
+                                <p class="link-description">Battle of the Forms / Talk Tracks on Customer Paper</p>
+                                
+                                <!-- DPA (link content unchanged) --><a href="https://www.procore.com/legal/dpa" target="_blank" class="knowledge-link">DPA</a>
+                                <p class="link-description">How we process Personal Data and comply with privacy laws</p>
+                                
+                                <!-- Customer facing DPA FAQ (link content unchanged) --><a href="https://procore.highspot.com/items/66903114e5aff0047c356a64?lfrm=srp.20#1" target="_blank" class="knowledge-link">Customer facing DPA FAQ on Highspot</a>
+                                
+                                <!-- Supplemental Terms (link content unchanged) --><a href="https://www.procore.com/legal/pay" target="_blank" class="knowledge-link">Supplemental Terms</a>
+                                <p class="link-description">These apply if the customer buys Procore Pay</p>
+                                
                             </div>
                         </div>
                     </div>
 
-                    <!-- Chat/FAQ Card -->
-                    <div class="chat-card" style="padding-left: 1.5rem;">
+                    <!-- Chat/FAQ Card --><div class="chat-card" style="padding-left: 1.5rem;">
                         <h3 class="hub-title" style="display: flex; align-items: center;"><span class="hub-title-icon" style="color: #4caf50;">💬</span> Chat with the Team</h3>
                         <p style="font-size: 0.875rem; color: #555; margin-bottom: 0.75rem;">Join the private Ironclad core team channel for discussions and direct Q&A.</p>
-                        <a href="#" class="chat-button">
+                        <a href="slack://channel?name=private-ironclad-discussions" target="_blank" class="chat-button">
                             Ask to join #private-ironclad-discussions
                         </a>
                     </div>
@@ -735,5 +780,33 @@
             CLM Optimization Page &bull; Procore Internal Resource
         </div>
     </footer>
+    
+    <!-- JavaScript to ensure smooth scrolling for internal section links and prevent unwanted behavior for placeholder links (href="#") --><script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Target all links that start with #
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    
+                    // 1. Check if it's a non-empty anchor (i.e., a real section ID like #mission)
+                    if (targetId.length > 1) { 
+                        e.preventDefault(); // Prevent default jump for smooth scroll implementation
+                        const targetElement = document.querySelector(targetId);
+
+                        if (targetElement) {
+                            // Smooth scroll to target
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    } else {
+                        // 2. If it is exactly href="#", prevent the default action entirely 
+                        // to stop the 'blob:' artifact and page jump.
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
