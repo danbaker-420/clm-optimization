@@ -385,14 +385,34 @@
         
         /* New styling for the sub-category label */
         .sub-category-label {
-            font-size: 0.95rem;
+            font-size: 0.85rem; /* Updated: Made smaller (0.95rem -> 0.85rem) */
             font-weight: 600;
-            color: var(--procore-navy); 
+            color: var(--procore-orange); /* Updated: Changed to Procore Orange */
             margin-top: 0.5rem;
             margin-bottom: 0.75rem;
             padding-left: 0;
             border-bottom: 1px dashed #ccc;
             display: block;
+        }
+
+        /* Styling for the Back to Top Link */
+        .back-to-top {
+            display: block;
+            margin-top: 1.5rem;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+        .back-to-top a {
+            color: var(--procore-blue);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            display: inline-block;
+            transition: color 0.2s;
+        }
+        .back-to-top a:hover {
+            color: var(--procore-orange);
+            text-decoration: underline;
         }
 
 
@@ -444,6 +464,8 @@
     </style>
 </head>
 <body>
+    <!-- Anchor tag for back-to-top links to target the menu area -->
+    <a id="top-menu"></a>
 
     <header class="header">
         <div class="container">
@@ -491,6 +513,7 @@
                     </ul>
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
 
         <!-- FY25 Strategic Pillars (2: The strategic roadmap) --><section id="pillars">
@@ -569,6 +592,7 @@
 
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
 
         <!-- Latest Updates & Release Notes Table (3: Recent progress/news) --><section id="updates">
@@ -645,6 +669,7 @@
                     </table>
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
 
         <!-- UpLevelOps Analysis (4: Context and Justification) --><section id="analysis">
@@ -664,6 +689,7 @@
                     </div>
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
 
         <!-- Leadership / About Us (5: Who is driving this) --><section id="leadership">
@@ -701,6 +727,7 @@
 
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
         
         <!-- Knowledge Hub & Engagement (6: Resources and Support) --><section id="hub">
@@ -771,6 +798,7 @@
                     </div>
                 </div>
             </details>
+            <div class="back-to-top"><a href="#top-menu">↑ Back to Top</a></div>
         </section>
 
     </main>
@@ -788,7 +816,7 @@
                 anchor.addEventListener('click', function(e) {
                     const targetId = this.getAttribute('href');
                     
-                    // 1. Check if it's a non-empty anchor (i.e., a real section ID like #mission)
+                    // 1. Check if it's a non-empty anchor (i.e., a real section ID like #mission, #top-menu)
                     if (targetId.length > 1) { 
                         e.preventDefault(); // Prevent default jump for smooth scroll implementation
                         const targetElement = document.querySelector(targetId);
